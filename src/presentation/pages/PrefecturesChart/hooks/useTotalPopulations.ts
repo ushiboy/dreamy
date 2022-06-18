@@ -35,8 +35,20 @@ export const useTotalPopulations = () => {
 
   const isSelected = (p: Prefecture) => totalPopulations.has(p);
 
+  const getChartData = () => {
+    return Array.from(totalPopulations.keys())
+      .sort((a, b) => {
+        return a.code - b.code;
+      })
+      .map((p) => ({
+        label: p.name,
+        data: totalPopulations.get(p) || [],
+      }));
+  };
+
   return {
     isSelected,
     toggle,
+    getChartData,
   };
 };
