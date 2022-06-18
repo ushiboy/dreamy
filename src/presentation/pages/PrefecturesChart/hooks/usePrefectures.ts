@@ -2,17 +2,17 @@ import { useState, useEffect, useContext } from "react";
 
 import { context } from "../context";
 
-import { Prefecture } from "~/domain/models/Prefecture";
+import { Prefecture } from "~/domain/models";
 
 export const usePrefectures = () => {
-  const { repository } = useContext(context);
+  const { prefectureRepository } = useContext(context);
   const [prefs, setPrefs] = useState<Prefecture[]>([]);
 
   useEffect(() => {
     (async () => {
-      setPrefs(await repository.fetchAll());
+      setPrefs(await prefectureRepository.fetchAll());
     })();
-  }, [repository, setPrefs]);
+  }, [prefectureRepository, setPrefs]);
 
   return {
     prefs,

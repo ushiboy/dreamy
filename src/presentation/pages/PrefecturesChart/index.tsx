@@ -1,7 +1,7 @@
 import React from "react";
 
 import { PrefecturesChartContainer } from "./Container";
-import { usePrefectures, useSelections } from "./hooks";
+import { usePrefectures, useTotalPopulations } from "./hooks";
 import * as S from "./style";
 
 export const PrefecturesChart: React.FC = () => {
@@ -14,7 +14,7 @@ export const PrefecturesChart: React.FC = () => {
 
 const Content: React.FC = () => {
   const { prefs } = usePrefectures();
-  const { selectedPrefs, toggle } = useSelections();
+  const { isSelected, toggle } = useTotalPopulations();
   return (
     <S.Root>
       <h1>Title</h1>
@@ -24,7 +24,7 @@ const Content: React.FC = () => {
             <label>
               <input
                 type="checkbox"
-                checked={selectedPrefs.has(p)}
+                checked={isSelected(p)}
                 onChange={() => toggle(p)}
               />
               {p.name}

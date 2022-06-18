@@ -1,6 +1,6 @@
 import { Response } from "./types";
 
-import { Prefecture } from "~/domain/models/Prefecture";
+import { Prefecture } from "~/domain/models";
 import { PrefectureDriverInterface } from "~/domain/repositories";
 
 export abstract class PrefectureDriver implements PrefectureDriverInterface {

@@ -1,2 +1,2 @@
-export * from "./PrefectureRepository";
 export * from "./TotalPopulationRepository";
+export * from "./types";

@@ -1,9 +1,13 @@
 import React, { createContext } from "react";
 
-import { PrefectureRepository } from "~/domain/repositories";
+import {
+  PrefectureRepository,
+  TotalPopulationRepository,
+} from "~/domain/repositories";
 
 export type PrefecturesChartContext = {
-  repository: PrefectureRepository;
+  prefectureRepository: PrefectureRepository;
+  totalPopulationRepository: TotalPopulationRepository;
 };
 
 export const context = createContext(

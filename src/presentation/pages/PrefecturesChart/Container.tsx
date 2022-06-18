@@ -2,17 +2,29 @@ import React from "react";
 
 import { PrefecturesChartProvider } from "./context";
 
-import { PrefectureRepository } from "~/domain/repositories";
-import { MockPrefectureDriver } from "~/infrastructure/drivers";
+import {
+  PrefectureRepository,
+  TotalPopulationRepository,
+} from "~/domain/repositories";
+import {
+  MockPrefectureDriver,
+  MockTotalPopulationDriver,
+} from "~/infrastructure/drivers";
 
 export const PrefecturesChartContainer: React.FC<{
   children: JSX.Element;
 }> = ({ children }) => {
-  const repository = new PrefectureRepository(new MockPrefectureDriver());
+  const prefectureRepository = new PrefectureRepository(
+    new MockPrefectureDriver()
+  );
+  const totalPopulationRepository = new TotalPopulationRepository(
+    new MockTotalPopulationDriver()
+  );
   return (
     <PrefecturesChartProvider
       value={{
-        repository,
+        prefectureRepository,
+        totalPopulationRepository,
       }}
     >
       {children}

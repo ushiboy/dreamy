@@ -1,2 +1,2 @@
 export * from "./usePrefectures";
-export * from "./useSelections";
+export * from "./useTotalPopulations";
