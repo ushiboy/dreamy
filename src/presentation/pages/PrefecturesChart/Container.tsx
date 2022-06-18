@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 
 import { PrefecturesChartProvider } from "./context";
 
@@ -7,18 +7,24 @@ import {
   TotalPopulationRepository,
 } from "~/domain/repositories";
 import {
-  MockPrefectureDriver,
-  MockTotalPopulationDriver,
+  // MockPrefectureDriver,
+  // MockTotalPopulationDriver,
+  RESASPrefectureDriver,
+  RESASTotalPopulationDriver,
 } from "~/infrastructure/drivers";
+import { context as AppContext } from "~/presentation/AppContext";
 
 export const PrefecturesChartContainer: React.FC<{
   children: JSX.Element;
 }> = ({ children }) => {
+  const { RESASClient } = useContext(AppContext);
   const prefectureRepository = new PrefectureRepository(
-    new MockPrefectureDriver()
+    new RESASPrefectureDriver(RESASClient)
+    // new MockPrefectureDriver()
   );
   const totalPopulationRepository = new TotalPopulationRepository(
-    new MockTotalPopulationDriver()
+    new RESASTotalPopulationDriver(RESASClient)
+    // new MockTotalPopulationDriver()
   );
   return (
     <PrefecturesChartProvider
