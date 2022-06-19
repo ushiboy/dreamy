@@ -1,8 +1,8 @@
 import React from "react";
 
-import { createRESASClient } from "~/infrastructure/httpClient";
-import { AppContextProvider } from "~/presentation/AppContext";
-import { PrefecturesChart } from "~/presentation/pages/PrefecturesChart";
+import { createRESASClient } from "~/infrastructures/httpClient";
+import { AppContextProvider } from "~/presentations/AppContext";
+import { PrefecturesChart } from "~/presentations/pages/PrefecturesChart";
 
 export type Props = {
   apiKey: string;
