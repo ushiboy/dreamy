@@ -4,11 +4,13 @@ import { context } from "../context";
 
 import { Prefecture, TotalPopulationPerYear } from "~/domain/models";
 
-export const useTotalPopulations = () => {
+export const useTotalPopulations = (
+  initTotalPopulations?: Map<Prefecture, TotalPopulationPerYear[]>
+) => {
   const { totalPopulationRepository } = useContext(context);
   const [totalPopulations, setTotalPopulations] = useState<
     Map<Prefecture, TotalPopulationPerYear[]>
-  >(new Map());
+  >(initTotalPopulations || new Map());
 
   const fetchTotalPopulationsByPrefecture = async (p: Prefecture) => {
     const r = await totalPopulationRepository.fetchAllByPrefecture(p);
@@ -52,3 +54,5 @@ export const useTotalPopulations = () => {
     getChartData,
   };
 };
+
+export type UseTotalPopulations = ReturnType<typeof useTotalPopulations>;
