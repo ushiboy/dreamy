@@ -2,6 +2,7 @@ import { useState, useContext } from "react";
 
 import { context } from "../context";
 
+import { ApplicationError } from "~/domains/exceptions";
 import { Prefecture, TotalPopulationPerYear } from "~/domains/models";
 
 export const useTotalPopulations = (
@@ -13,11 +14,15 @@ export const useTotalPopulations = (
   >(initTotalPopulations || new Map());
 
   const fetchTotalPopulationsByPrefecture = async (p: Prefecture) => {
-    const r = await totalPopulationRepository.fetchAllByPrefecture(p);
-    setTotalPopulations((prev) => {
-      prev.set(p, r);
-      return new Map(prev);
-    });
+    try {
+      const r = await totalPopulationRepository.fetchAllByPrefecture(p);
+      setTotalPopulations((prev) => {
+        prev.set(p, r);
+        return new Map(prev);
+      });
+    } catch (e) {
+      alert((e as ApplicationError).message);
+    }
   };
 
   const toggle = (p: Prefecture) => {

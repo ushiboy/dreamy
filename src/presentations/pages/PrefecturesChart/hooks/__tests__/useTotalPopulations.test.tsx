@@ -11,9 +11,12 @@ import {
   UseTotalPopulations,
 } from "../useTotalPopulations";
 
+import { ApplicationError } from "~/domains/exceptions";
+import { Prefecture, TotalPopulationPerYear } from "~/domains/models";
 import {
   PrefectureRepository,
   TotalPopulationRepository,
+  TotalPopulationDriverInterface,
 } from "~/domains/repositories";
 import {
   MockPrefectureDriver,
@@ -21,12 +24,12 @@ import {
 } from "~/infrastructures/drivers";
 
 describe("useTotalPopulations", () => {
-  const Wrap: React.FC<{ children: JSX.Element }> = ({ children }) => {
+  const Wrap: React.FC<{
+    totalPopulationRepository: TotalPopulationRepository;
+    children: JSX.Element;
+  }> = ({ totalPopulationRepository, children }) => {
     const prefectureRepository = new PrefectureRepository(
       new MockPrefectureDriver()
-    );
-    const totalPopulationRepository = new TotalPopulationRepository(
-      new MockTotalPopulationDriver()
     );
     const value = { totalPopulationRepository, prefectureRepository };
     return (
@@ -43,34 +46,86 @@ describe("useTotalPopulations", () => {
     };
 
     describe("指定した都道府県が未選択の場合", () => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      let r: RenderHookResult<any, UseTotalPopulations>;
-      beforeEach(() => {
-        r = renderHook(() => useTotalPopulations(), {
-          wrapper: Wrap,
+      describe("通常の場合", () => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        let r: RenderHookResult<any, UseTotalPopulations>;
+        beforeEach(() => {
+          const totalPopulationRepository = new TotalPopulationRepository(
+            new MockTotalPopulationDriver()
+          );
+          r = renderHook(() => useTotalPopulations(), {
+            wrapper: Wrap,
+            initialProps: {
+              totalPopulationRepository,
+              children: <div />,
+            },
+          });
+        });
+
+        it("指定した都道府県を選択済みにする", async () => {
+          const { result, waitForNextUpdate } = r;
+          expect(result.current.isSelected(p)).toBeFalsy();
+          act(() => result.current.toggle(p));
+          await waitForNextUpdate();
+
+          expect(result.current.isSelected(p)).toBeTruthy();
+        });
+
+        it("指定した都道府県の総人口データを取得する", async () => {
+          const { result, waitForNextUpdate } = r;
+          let data = result.current.getChartData();
+          expect(data.length).toBe(0);
+
+          act(() => result.current.toggle(p));
+          await waitForNextUpdate();
+
+          data = result.current.getChartData();
+          expect(data.length).toBe(1);
+          expect(data[0].label).toBe(p.name);
         });
       });
 
-      it("指定した都道府県を選択済みにする", async () => {
-        const { result, waitForNextUpdate } = r;
-        expect(result.current.isSelected(p)).toBeFalsy();
-        act(() => result.current.toggle(p));
-        await waitForNextUpdate();
+      describe("都道府県の総人口データ取得中にエラーが発生した場合", () => {
+        class FailDriver implements TotalPopulationDriverInterface {
+          async fetchAllByPrefecture(
+            p: Prefecture
+          ): Promise<TotalPopulationPerYear[]> {
+            console.log(p);
+            throw new ApplicationError("error");
+          }
+        }
 
-        expect(result.current.isSelected(p)).toBeTruthy();
-      });
+        let jsDomAlert: typeof window.alert;
+        let calledAlert = false;
 
-      it("指定した都道府県の総人口データを取得する", async () => {
-        const { result, waitForNextUpdate } = r;
-        let data = result.current.getChartData();
-        expect(data.length).toBe(0);
+        beforeEach(() => {
+          jsDomAlert = window.alert;
+          window.alert = jest.fn((m: string) => {
+            calledAlert = true;
+            console.log(m);
+          });
+        });
+        afterEach(() => {
+          window.alert = jsDomAlert;
+        });
 
-        act(() => result.current.toggle(p));
-        await waitForNextUpdate();
+        it("アラートでエラーメッセージを表示する", async () => {
+          const totalPopulationRepository = new TotalPopulationRepository(
+            new FailDriver()
+          );
+          const { result, waitFor } = renderHook(() => useTotalPopulations(), {
+            wrapper: Wrap,
+            initialProps: {
+              totalPopulationRepository,
+              children: <div />,
+            },
+          });
 
-        data = result.current.getChartData();
-        expect(data.length).toBe(1);
-        expect(data[0].label).toBe(p.name);
+          act(() => result.current.toggle(p));
+          await waitFor(() => calledAlert);
+
+          expect(window.alert).toHaveBeenCalledWith("error");
+        });
       });
     });
 
