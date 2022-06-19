@@ -21,7 +21,7 @@ export const useTotalPopulations = (
   };
 
   const toggle = (p: Prefecture) => {
-    if (totalPopulations.has(p)) {
+    if (isSelected(p)) {
       setTotalPopulations((prev) => {
         prev.delete(p);
         return new Map(prev);
@@ -38,13 +38,13 @@ export const useTotalPopulations = (
   const isSelected = (p: Prefecture) => totalPopulations.has(p);
 
   const getChartData = () => {
-    return Array.from(totalPopulations.keys())
+    return Array.from(totalPopulations.entries())
       .sort((a, b) => {
-        return a.code - b.code;
+        return a[0].code - b[0].code;
       })
       .map((p) => ({
-        label: p.name,
-        data: totalPopulations.get(p) || [],
+        label: p[0].name,
+        data: p[1],
       }));
   };
 
