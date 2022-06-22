@@ -2,8 +2,8 @@ import React from "react";
 
 import { LineChart } from "./components/LineChart";
 import { PrefList } from "./components/PrefList";
-import { PrefecturesChartContainer } from "./Container";
 import { usePrefectures, useTotalPopulations } from "./hooks";
+import { PrefecturesChartContainer } from "./PrefecturesChartContainer";
 import * as S from "./style";
 
 export const PrefecturesChart: React.FC = () => {
