@@ -1,39 +1,19 @@
-import React, { useContext } from "react";
+import React from "react";
 
-import { PrefecturesChartProvider } from "./PrefecturesChartContext";
+import { LineChart } from "./components/LineChart";
+import { PrefList } from "./components/PrefList";
+import { usePrefectures, useTotalPopulations } from "./hooks";
+import * as S from "./style";
 
-import {
-  PrefectureRepository,
-  TotalPopulationRepository,
-} from "~/domains/repositories";
-import {
-  // MockPrefectureDriver,
-  // MockTotalPopulationDriver,
-  RESASPrefectureDriver,
-  RESASTotalPopulationDriver,
-} from "~/infrastructures/drivers";
-import { AppContext } from "~/presentations/AppContext";
-
-export const PrefecturesChartContainer: React.FC<{
-  children: JSX.Element;
-}> = ({ children }) => {
-  const { RESASClient } = useContext(AppContext);
-  const prefectureRepository = new PrefectureRepository(
-    new RESASPrefectureDriver(RESASClient)
-    // new MockPrefectureDriver()
-  );
-  const totalPopulationRepository = new TotalPopulationRepository(
-    new RESASTotalPopulationDriver(RESASClient)
-    // new MockTotalPopulationDriver()
-  );
+export const PrefecturesChartContainer: React.FC = () => {
+  const { prefs } = usePrefectures();
+  const { isSelected, toggle, getChartData } = useTotalPopulations();
+  const datasets = getChartData();
   return (
-    <PrefecturesChartProvider
-      value={{
-        prefectureRepository,
-        totalPopulationRepository,
-      }}
-    >
-      {children}
-    </PrefecturesChartProvider>
+    <S.Root>
+      <h1>Title</h1>
+      <PrefList prefs={prefs} isSelected={isSelected} toggle={toggle} />
+      <LineChart datasets={datasets} />
+    </S.Root>
   );
 };
