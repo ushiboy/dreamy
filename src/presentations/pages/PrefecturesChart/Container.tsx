@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 
-import { PrefecturesChartProvider } from "./context";
+import { PrefecturesChartProvider } from "./PrefecturesChartContext";
 
 import {
   PrefectureRepository,

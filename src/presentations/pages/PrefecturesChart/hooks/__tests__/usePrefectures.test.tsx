@@ -1,7 +1,7 @@
 import { renderHook } from "@testing-library/react-hooks";
 import React from "react";
 
-import { PrefecturesChartProvider } from "../../context";
+import { PrefecturesChartProvider } from "../../PrefecturesChartContext";
 import { usePrefectures } from "../usePrefectures";
 
 import { ApplicationError } from "~/domains/exceptions";

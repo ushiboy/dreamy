@@ -5,18 +5,22 @@ import {
   TotalPopulationRepository,
 } from "~/domains/repositories";
 
-export type PrefecturesChartContext = {
+type Context = {
   prefectureRepository: PrefectureRepository;
   totalPopulationRepository: TotalPopulationRepository;
 };
 
-export const context = createContext(
-  Object.create(null) as PrefecturesChartContext
+export const PrefecturesChartContext = createContext(
+  Object.create(null) as Context
 );
 
 export const PrefecturesChartProvider: React.FC<{
-  value: PrefecturesChartContext;
+  value: Context;
   children: JSX.Element;
 }> = ({ value, children }) => {
-  return <context.Provider value={value}>{children}</context.Provider>;
+  return (
+    <PrefecturesChartContext.Provider value={value}>
+      {children}
+    </PrefecturesChartContext.Provider>
+  );
 };

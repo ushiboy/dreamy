@@ -5,7 +5,7 @@ import {
 } from "@testing-library/react-hooks";
 import React from "react";
 
-import { PrefecturesChartProvider } from "../../context";
+import { PrefecturesChartProvider } from "../../PrefecturesChartContext";
 import {
   useTotalPopulations,
   UseTotalPopulations,

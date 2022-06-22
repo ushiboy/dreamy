@@ -1,6 +1,6 @@
 import { useState, useContext } from "react";
 
-import { context } from "../context";
+import { PrefecturesChartContext } from "../PrefecturesChartContext";
 
 import { ApplicationError } from "~/domains/exceptions";
 import { Prefecture, TotalPopulationPerYear } from "~/domains/models";
@@ -8,7 +8,7 @@ import { Prefecture, TotalPopulationPerYear } from "~/domains/models";
 export const useTotalPopulations = (
   initTotalPopulations?: Map<Prefecture, TotalPopulationPerYear[]>
 ) => {
-  const { totalPopulationRepository } = useContext(context);
+  const { totalPopulationRepository } = useContext(PrefecturesChartContext);
   const [totalPopulations, setTotalPopulations] = useState<
     Map<Prefecture, TotalPopulationPerYear[]>
   >(initTotalPopulations || new Map());
