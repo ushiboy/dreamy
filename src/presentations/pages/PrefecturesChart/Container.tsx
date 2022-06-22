@@ -12,7 +12,7 @@ import {
   RESASPrefectureDriver,
   RESASTotalPopulationDriver,
 } from "~/infrastructures/drivers";
-import { context as AppContext } from "~/presentations/AppContext";
+import { AppContext } from "~/presentations/AppContext";
 
 export const PrefecturesChartContainer: React.FC<{
   children: JSX.Element;

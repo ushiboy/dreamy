@@ -1,15 +1,15 @@
 import { AxiosInstance } from "axios";
 import React, { createContext } from "react";
 
-export type AppContext = {
+type Context = {
   RESASClient: AxiosInstance;
 };
 
-export const context = createContext(Object.create(null) as AppContext);
+export const AppContext = createContext(Object.create(null) as Context);
 
 export const AppContextProvider: React.FC<{
-  value: AppContext;
+  value: Context;
   children: JSX.Element;
 }> = ({ value, children }) => {
-  return <context.Provider value={value}>{children}</context.Provider>;
+  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };
