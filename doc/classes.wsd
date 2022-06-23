@@ -1,0 +1,78 @@
+@startuml クラス構成
+
+title クラス構成
+
+class ApplicationError
+class FailedToFetchPrefectureException
+class FailedToFetchTotalPopulationException
+
+interface PrefectureDriverInterface
+class PrefectureDriver
+class  RESASPrefectureDriver
+class MockPrefectureDriver
+
+interface TotalPopulationDriverInterface
+class TotalPopulationDriver
+class RESASTotalPopulationDriver
+class MockTotalPopulationDriver
+
+class PrefectureRepository
+class TotalPopulationRepository
+
+class App 
+class AppContext
+class AppContextProvider
+class PrefecturesChart 
+class PrefecturesChartContainer
+class PrefecturesChartContext
+class PrefecturesChartContextProvider
+class LineChart
+class PrefList
+class usePrefectures
+class useTotalPopulations
+
+
+ApplicationError <|-- FailedToFetchPrefectureException
+ApplicationError <|-- FailedToFetchTotalPopulationException
+
+FailedToFetchPrefectureException <.. PrefectureDriver
+FailedToFetchTotalPopulationException <.. TotalPopulationDriver
+
+PrefectureDriverInterface <|.. PrefectureDriver
+PrefectureDriver <|-- RESASPrefectureDriver
+PrefectureDriver <|-- MockPrefectureDriver
+
+PrefectureRepository *-- PrefectureDriverInterface
+
+TotalPopulationDriverInterface <|.. TotalPopulationDriver
+TotalPopulationDriver <|-- RESASTotalPopulationDriver
+TotalPopulationDriver <|-- MockTotalPopulationDriver
+
+TotalPopulationRepository *-- TotalPopulationDriverInterface
+
+App ..> AppContextProvider
+AppContextProvider ..> AppContext
+
+AppContext <.. PrefecturesChart
+PrefectureRepository <.. PrefecturesChart
+TotalPopulationRepository <.. PrefecturesChart
+RESASPrefectureDriver <.. PrefecturesChart
+RESASTotalPopulationDriver <.. PrefecturesChart
+PrefecturesChart ..> PrefecturesChartContextProvider
+
+PrefecturesChartContextProvider ..> PrefecturesChartContext
+PrefectureRepository <-- PrefecturesChartContext
+TotalPopulationRepository <-- PrefecturesChartContext
+
+PrefecturesChartContext <-- usePrefectures
+PrefectureRepository <-- usePrefectures
+PrefecturesChartContext <-- useTotalPopulations
+TotalPopulationRepository <-- useTotalPopulations
+
+PrefecturesChart ..> PrefecturesChartContainer
+PrefecturesChartContainer ..> usePrefectures
+PrefecturesChartContainer ..> useTotalPopulations
+PrefecturesChartContainer ..> PrefList
+PrefecturesChartContainer ..> LineChart
+
+@enduml
