@@ -5,7 +5,7 @@ import {
 } from "@testing-library/react-hooks";
 import React from "react";
 
-import { PrefecturesChartProvider } from "../../PrefecturesChartContext";
+import { PrefecturesChartContextProvider } from "../../PrefecturesChartContext";
 import {
   useTotalPopulations,
   UseTotalPopulations,
@@ -33,9 +33,9 @@ describe("useTotalPopulations", () => {
     );
     const value = { totalPopulationRepository, prefectureRepository };
     return (
-      <PrefecturesChartProvider value={value}>
+      <PrefecturesChartContextProvider value={value}>
         {children}
-      </PrefecturesChartProvider>
+      </PrefecturesChartContextProvider>
     );
   };
 

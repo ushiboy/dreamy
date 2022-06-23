@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 
 import { PrefecturesChartContainer } from "./PrefecturesChartContainer";
-import { PrefecturesChartProvider } from "./PrefecturesChartContext";
+import { PrefecturesChartContextProvider } from "./PrefecturesChartContext";
 
 import {
   PrefectureRepository,
@@ -26,13 +26,13 @@ export const PrefecturesChart: React.FC = () => {
     // new MockTotalPopulationDriver()
   );
   return (
-    <PrefecturesChartProvider
+    <PrefecturesChartContextProvider
       value={{
         prefectureRepository,
         totalPopulationRepository,
       }}
     >
       <PrefecturesChartContainer />
-    </PrefecturesChartProvider>
+    </PrefecturesChartContextProvider>
   );
 };

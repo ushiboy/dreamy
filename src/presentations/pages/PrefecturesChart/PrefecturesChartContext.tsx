@@ -14,7 +14,7 @@ export const PrefecturesChartContext = createContext(
   Object.create(null) as Context
 );
 
-export const PrefecturesChartProvider: React.FC<{
+export const PrefecturesChartContextProvider: React.FC<{
   value: Context;
   children: JSX.Element;
 }> = ({ value, children }) => {
