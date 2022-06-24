@@ -10,7 +10,7 @@ export const PrefecturesChartContainer: React.FC = () => {
   const { isSelected, toggle, getChartData } = useTotalPopulations();
   const datasets = getChartData();
   return (
-    <S.Root>
+    <S.Root data-testid="prefecturesChart">
       <h1>Title</h1>
       <PrefList prefs={prefs} isSelected={isSelected} toggle={toggle} />
       <LineChart datasets={datasets} />
