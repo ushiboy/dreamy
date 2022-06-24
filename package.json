@@ -10,7 +10,8 @@
     "lint": "npm run check && npm run lint:eslint && npm run lint:prettier",
     "lint:eslint": "eslint src --fix --ext .js,.jsx,.ts,.tsx",
     "lint:prettier": "prettier --write src",
-    "test": "jest"
+    "test": "jest",
+    "e2e": "playwright test"
   },
   "dependencies": {
     "@emotion/react": "^11.9.3",
