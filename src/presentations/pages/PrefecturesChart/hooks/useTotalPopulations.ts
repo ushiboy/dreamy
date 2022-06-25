@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useCallback } from "react";
 
 import { PrefecturesChartContext } from "../PrefecturesChartContext";
 
@@ -25,24 +25,30 @@ export const useTotalPopulations = (
     }
   };
 
-  const toggle = (p: Prefecture) => {
-    if (isSelected(p)) {
-      setTotalPopulations((prev) => {
-        prev.delete(p);
-        return new Map(prev);
-      });
-    } else {
-      setTotalPopulations((prev) => {
-        prev.set(p, []);
-        return new Map(prev);
-      });
-      fetchTotalPopulationsByPrefecture(p);
-    }
-  };
+  const isSelected = useCallback(
+    (p: Prefecture) => totalPopulations.has(p),
+    [totalPopulations]
+  );
 
-  const isSelected = (p: Prefecture) => totalPopulations.has(p);
+  const toggle = useCallback(
+    (p: Prefecture) => {
+      if (isSelected(p)) {
+        setTotalPopulations((prev) => {
+          prev.delete(p);
+          return new Map(prev);
+        });
+      } else {
+        setTotalPopulations((prev) => {
+          prev.set(p, []);
+          return new Map(prev);
+        });
+        fetchTotalPopulationsByPrefecture(p);
+      }
+    },
+    [isSelected, setTotalPopulations]
+  );
 
-  const getChartData = () => {
+  const getChartData = useCallback(() => {
     return Array.from(totalPopulations.entries())
       .sort((a, b) => {
         return a[0].code - b[0].code;
@@ -51,7 +57,7 @@ export const useTotalPopulations = (
         label: p[0].name,
         data: p[1],
       }));
-  };
+  }, [totalPopulations]);
 
   return {
     isSelected,
