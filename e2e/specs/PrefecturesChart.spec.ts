@@ -7,9 +7,17 @@ test.describe("PrefecturesChart", () => {
     const p = new PrefecturesChartPage(page);
     await p.goto();
 
-    expect(await p.isSelectedPrefectureByCode(1)).toBeFalsy();
+    expect(await p.isSelectedPrefectureByCode(47)).toBeFalsy();
+
+    await p.clickPrefectureByCode(47);
+    expect(await p.isSelectedPrefectureByCode(47)).toBeTruthy();
 
     await p.clickPrefectureByCode(1);
+    expect(await p.isSelectedPrefectureByCode(47)).toBeTruthy();
+    expect(await p.isSelectedPrefectureByCode(1)).toBeTruthy();
+
+    await p.clickPrefectureByCode(47);
+    expect(await p.isSelectedPrefectureByCode(47)).toBeFalsy();
     expect(await p.isSelectedPrefectureByCode(1)).toBeTruthy();
   });
 });

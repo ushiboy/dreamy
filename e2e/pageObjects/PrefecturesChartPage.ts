@@ -10,11 +10,15 @@ export class PrefecturesChartPage {
   }
 
   async goto() {
-    return this.page.goto("http://localhost:3000/");
+    await this.page.goto("http://localhost:3000/");
+    await this.page.waitForTimeout(1000);
   }
 
   async clickPrefectureByCode(code: number) {
-    return this.prefecturesChart
+    await this.page.waitForSelector(
+      `[data-testid=prefListItemCheckbox-${code}]`
+    );
+    await this.prefecturesChart
       .locator(`[data-testid=prefListItemCheckbox-${code}]`)
       .click();
   }
@@ -22,6 +26,6 @@ export class PrefecturesChartPage {
   async isSelectedPrefectureByCode(code: number): Promise<boolean> {
     return this.prefecturesChart
       .locator(`[data-testid=prefListItemCheckbox-${code}]`)
-      .evaluate((node: HTMLInputElement) => node.checked);
+      .isChecked();
   }
 }
