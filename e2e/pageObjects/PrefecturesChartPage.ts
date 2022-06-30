@@ -11,7 +11,6 @@ export class PrefecturesChartPage {
 
   async goto() {
     await this.page.goto("http://localhost:3000/");
-    await this.page.waitForTimeout(1000);
   }
 
   async clickPrefectureByCode(code: number) {
